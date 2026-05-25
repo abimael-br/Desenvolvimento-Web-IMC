@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC - Resultado</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .resultado-box {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .imc-valor {
+            font-size: 48px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+        
+        .classificacao {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .info-user {
+            font-size: 15px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Seu Resultado</h2>
+
+        <div class="resultado-box">
+            <p class="info-user" id="cumprimento">Olá!</p>
+            <p>Seu IMC calculado é:</p>
+            <div class="imc-valor" id="imcNumero">0.0</div>
+            <p class="classificacao" id="imcStatus">Carregando...</p>
+        </div>
+
+        <div class="table-container">
+            <h3>Tabela de Referência Média</h3>
+            <p style="font-size: 12px; color: #7f8c8d; text-align: center; margin-bottom: 10px;">
+                Valores médios populacionais saudáveis para comparação:
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Faixa Etária</th>
+                        <th>Sexo</th>
+                        <th>Peso Médio</th>
+                        <th>Altura Média</th>
+                        <th>IMC Ideal</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                    <tr id="ref-jovem-m">
+                        <td>18 - 24 anos</td>
+                        <td>Masc</td>
+                        <td>72 kg</td>
+                        <td>1.75 m</td>
+                        <td>23.5</td>
+                    </tr>
+                    <tr id="ref-jovem-f">
+                        <td>18 - 24 anos</td>
+                        <td>Fem</td>
+                        <td>61 kg</td>
+                        <td>1.63 m</td>
+                        <td>23.0</td>
+                    </tr>
+                    <tr id="ref-adulto-m">
+                        <td>25 - 44 anos</td>
+                        <td>Masc</td>
+                        <td>78 kg</td>
+                        <td>1.76 m</td>
+                        <td>25.2</td>
+                    </tr>
+                    <tr id="ref-adulto-f">
+                        <td>25 - 44 anos</td>
+                        <td>Fem</td>
+                        <td>66 kg</td>
+                        <td>1.64 m</td>
+                        <td>24.5</td>
+                    </tr>
+                    <tr id="ref-meia-m">
+                        <td>45 - 64 anos</td>
+                        <td>Masc</td>
+                        <td>81 kg</td>
+                        <td>1.74 m</td>
+                        <td>26.7</td>
+                    </tr>
+                    <tr id="ref-meia-f">
+                        <td>45 - 64 anos</td>
+                        <td>Fem</td>
+                        <td>70 kg</td>
+                        <td>1.61 m</td>
+                        <td>27.0</td>
+                    </tr>
+                    <tr id="ref-idoso-m">
+                        <td>65+ anos</td>
+                        <td>Masc</td>
+                        <td>75 kg</td>
+                        <td>1.70 m</td>
+                        <td>26.0</td>
+                    </tr>
+                    <tr id="ref-idoso-f">
+                        <td>65+ anos</td>
+                        <td>Fem</td>
+                        <td>65 kg</td>
+                        <td>1.57 m</td>
+                        <td>26.4</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <a href="index.html" class="btn-secondary">← Calcular Novamente</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dadosObtidos = localStorage.getItem('dadosIMC');
+
+            if (!dadosObtidos) {
+                alert('Nenhum dado encontrado!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const usuario = JSON.parse(dadosObtidos);
+            const imc = usuario.peso / (usuario.altura * usuario.altura);
+
+            let classificacao = "";
+            if (imc < 18.5) classificacao = "Abaixo do peso";
+            else if (imc >= 18.5 && imc < 24.9) classificacao = "Peso normal";
+            else if (imc >= 25 && imc < 29.9) classificacao = "Sobrepeso";
+            else if (imc >= 30 && imc < 34.9) classificacao = "Obesidade Grau I";
+            else if (imc >= 35 && imc < 39.9) classificacao = "Obesidade Grau II";
+            else classificacao = "Obesidade Grau III";
+
+            const textoSexo = usuario.sexo === 'M' ? 'Masculino' : 'Feminino';
+            document.getElementById('cumprimento').innerText = `Olá, ${usuario.nome}! Você tem ${usuario.idade} anos e selecionou o sexo ${textoSexo}.`;
+            document.getElementById('imcNumero').innerText = imc.toFixed(1);
+            document.getElementById('imcStatus').innerText = classificacao;
+
+            const campoImc = document.getElementById('imcNumero');
+            if (classificacao === "Peso normal") campoImc.style.color = "#2ecc71";
+            else if (classificacao === "Sobrepeso" || classificacao === "Abaixo do peso") campoImc.style.color = "#f1c40f";
+            else campoImc.style.color = "#e74c3c";
+
+            let idLinhaDestaque = "";
+
+            if (usuario.idade <= 24) {
+                idLinhaDestaque = usuario.sexo === 'M' ? 'ref-jovem-m' : 'ref-jovem-f';
+            } else if (usuario.idade >= 25 && usuario.idade <= 44) {
+                idLinhaDestaque = usuario.sexo === 'M' ? 'ref-adulto-m' : 'ref-adulto-f';
+            } else if (usuario.idade >= 45 && usuario.idade <= 64) {
+                idLinhaDestaque = usuario.sexo === 'M' ? 'ref-meia-m' : 'ref-meia-f';
+            } else {
+                idLinhaDestaque = usuario.sexo === 'M' ? 'ref-idoso-m' : 'ref-idoso-f';
+            }
+
+            const linhaParaDestacar = document.getElementById(idLinhaDestaque);
+            if (linhaParaDestacar) {
+                linhaParaDestacar.classList.add('destaque-linha');
+            }
+        });
+    </script>
+</body>
+
+</html>
