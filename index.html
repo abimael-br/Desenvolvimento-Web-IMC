@@ -4,148 +4,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de IMC - Dados</title>
+    <title>Protótipo IMC - Entrada</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            padding: 40px 20px;
             color: #333;
+        }
+        
+        .box {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
             padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 24px;
-            color: #2c3e50;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
+        .campo {
+            margin-bottom: 15px;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
         
-        input[type="number"],
-        input[type="text"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         
-        input[type="number"]:focus,
-        input[type="text"]:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        
-        .radio-group {
-            display: flex;
-            gap: 20px;
+        .radio-grupo {
             margin-top: 5px;
+        }
+        
+        .radio-grupo label {
+            display: inline;
+            margin-right: 15px;
+            font-weight: normal;
         }
         
         button {
             width: 100%;
-            background-color: #2ecc71;
-            color: white;
-            padding: 14px;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-weight: bold;
         }
         
         button:hover {
-            background-color: #27ae60;
+            background-color: #555;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>Calculadora de IMC</h1>
-        <form id="imcForm">
-            <div class="form-group">
-                <label for="nome">Nome:</label>
+    <div class="box">
+        <h2>Protótipo IMC</h2>
+        <form id="formImc">
+            <div class="campo">
+                <label>Nome</label>
                 <input type="text" id="nome" required>
             </div>
-
-            <div class="form-group">
-                <label for="idade">Idade:</label>
-                <input type="number" id="idade" min="1" max="120" placeholder="Ex: 25" required>
+            <div class="campo">
+                <label>Idade</label>
+                <input type="number" id="idade" min="1" max="120" required>
             </div>
-
-            <div class="form-group">
-                <label>Sexo:</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="sexo" value="M" checked> Masculino</label>
-                    <label><input type="radio" name="sexo" value="F"> Feminino</label>
+            <div class="campo">
+                <label>Sexo</label>
+                <div class="radio-grupo">
+                    <label><input type="radio" name="sexo" value="M" checked> M</label>
+                    <label><input type="radio" name="sexo" value="F"> F</label>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="peso">Peso (kg):</label>
-                <input type="number" id="peso" step="0.1" placeholder="Ex: 75.5" required>
+            <div class="campo">
+                <label>Peso (kg)</label>
+                <input type="number" id="peso" step="0.1" required>
             </div>
-
-            <div class="form-group">
-                <label for="altura">Altura (m):</label>
-                <input type="number" id="altura" step="0.01" placeholder="Ex: 1.75" required>
+            <div class="campo">
+                <label>Altura (m)</label>
+                <input type="number" id="altura" step="0.01" required>
             </div>
-
-            <button type="submit">Calcular Resultado →</button>
+            <button type="submit">Calcular</button>
         </form>
     </div>
 
     <script>
-        document.getElementById('imcForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        document.getElementById('formImc').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-            const nome = document.getElementById('nome').value;
-            const idade = parseInt(document.getElementById('idade').value);
-            const sexo = document.querySelector('input[name="sexo"]:checked').value;
-            const peso = parseFloat(document.getElementById('peso').value);
-            const altura = parseFloat(document.getElementById('altura').value);
-
-            const dadosUsuario = {
-                nome: nome,
-                idade: idade,
-                sexo: sexo,
-                peso: peso,
-                altura: altura
+            const dados = {
+                nome: document.getElementById('nome').value,
+                idade: parseInt(document.getElementById('idade').value),
+                sexo: document.querySelector('input[name="sexo"]:checked').value,
+                peso: parseFloat(document.getElementById('peso').value),
+                altura: parseFloat(document.getElementById('altura').value)
             };
 
-            localStorage.setItem('dadosIMC', JSON.stringify(dadosUsuario));
+            localStorage.setItem('dadosIMC', JSON.stringify(dados));
             window.location.href = 'resultado.html';
         });
     </script>
