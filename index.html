@@ -44,19 +44,25 @@
 
     <script>
         document.getElementById('formImc').addEventListener('submit', function(e) {
-            e.preventDefault();
+    e.preventDefault();
 
-            const dados = {
-                nome: document.getElementById('nome').value,
-                idade: parseInt(document.getElementById('idade').value),
-                sexo: document.querySelector('input[name="sexo"]:checked').value,
-                peso: parseFloat(document.getElementById('peso').value),
-                altura: parseFloat(document.getElementById('altura').value)
-            };
+    let alturaInformada = parseFloat(document.getElementById('altura').value);
+    
+    if (alturaInformada > 3) {
+        alturaInformada = alturaInformada / 100;
+    }
 
-            localStorage.setItem('dadosIMC', JSON.stringify(dados));
-            window.location.href = 'resultado.html';
-        });
+    const dados = {
+        nome: document.getElementById('nome').value,
+        idade: parseInt(document.getElementById('idade').value),
+        sexo: document.querySelector('input[name="sexo"]:checked').value,
+        peso: parseFloat(document.getElementById('peso').value),
+        altura: alturaInformada
+    };
+
+    localStorage.setItem('dadosIMC', JSON.stringify(dados));
+    window.location.href = 'resultado.html';
+});
     </script>
 </body>
 

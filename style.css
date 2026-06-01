@@ -31,6 +31,12 @@ input[type="number"] {
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
+    transition: 0.25s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    scale: 1.05;
 }
 
 .radio-grupo {
@@ -41,6 +47,7 @@ input[type="number"] {
     display: inline;
     margin-right: 15px;
     font-weight: normal;
+
 }
 
 button {
@@ -52,10 +59,13 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.25s;
 }
 
 button:hover {
     background-color: #555;
+    scale: 1.05;
+    border-radius: 15px;
 }
 
 .res-destaque {
@@ -102,4 +112,11 @@ th {
     color: #555;
     text-decoration: none;
     font-size: 14px;
+    transition: 0.25s;
+}
+
+.btn-voltar:hover{
+    scale: 1.05;
+    border: 1px black solid;
+    border-radius: 15px;
 }
